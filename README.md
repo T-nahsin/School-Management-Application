@@ -1,38 +1,77 @@
-#  School Management Backend (WIP)
+# 🏫 School Management Application
 
-This is the backend system for a **School Management Application**, built using **Spring Boot** and **MongoDB Atlas**.  
-Currently, the `Student` entity has been implemented.
-
----
-
-## ✅ Current Status
-
-- 🔧 Backend framework: Spring Boot
-- 🗃️ Database: MongoDB Atlas (Cloud NoSQL)
-- 💡 Implemented:
-    - `Student` entity
-- ⏳ In Progress:
-    - API endpoints
-    - Other entities: Teacher, Attendance, etc.
-    - Authentication and user roles
+A RESTful backend built with **Spring Boot 3.4.6**, **Java 24**, and **MongoDB Atlas**, featuring role-based access control and an embedded attendance tracking system.
 
 ---
 
-##  Tech Stack
+## 🚀 Features
 
-| Component  | Technology        |
-|------------|-------------------|
-| Language   | Java 21           |
-| Framework  | Spring Boot 3.4.2 |
-| Database   | MongoDB Atlas     |
-| Build Tool | Maven             |
-| IDE        | IntelliJ IDEA     |
+- **Role-based Authentication** using Spring Security (Basic Auth — no JWT)
+    - **TEACHER** can mark student attendance
+    - **STUDENT** can view their attendance records
+- **Attendance** is stored as an embedded list within each Student document
+- Secure password storage using **BCrypt**
+- Prevents duplicate usernames at registration
+- REST API tested via Postman
 
 ---
 
-##  MongoDB Configuration
+## 🗂️ Project Structure
 
-In `src/main/resources/application.properties`, use a **non-SRV URI** to avoid DNS resolution issues:
+src/main/java/com/tnahsin/sma/
+├── SchoolManagementApplication.java
+├── config/
+│ └── SecurityConfig.java
+├── controller/
+│ ├── AuthController.java
+│ ├── TeacherController.java
+│ └── StudentController.java
+├── model/
+│ ├── User.java
+│ ├── Teacher.java
+│ ├── Student.java
+│ └── Attendance.java
+├── repository/
+│ ├── UserRepository.java
+│ ├── TeacherRepository.java
+│ └── StudentRepository.java
+└── service/
+├── CustomUserDetailsService.java
+├── TeacherService.java
+└── StudentService.java
 
-```properties
-spring.data.mongodb.uri=mongodb://<username>:<password>@host1:port1,host2:port2,host3:port3/databaseName?ssl=true&replicaSet=replicaName&authSource=admin
+yaml
+Copy
+Edit
+
+---
+
+## 🔧 Technologies Used
+
+| Aspect           | Details                        |
+|------------------|--------------------------------|
+| Language         | Java 24                        |
+| Framework        | Spring Boot 3.4.6              |
+| Database         | MongoDB Atlas                  |
+| Security         | Spring Security (Basic Auth)   |
+| Auth Type        | Role-based (TEACHER/ STUDENT)  |
+| Build Tool       | Maven                          |
+| Testing          | Postman                        |
+
+---
+
+## 🔐 Security & Authentication
+
+- **Basic Authentication** via HTTP headers
+- `UserDetailsService` loads users from MongoDB (`Teacher` or `Student`)
+- Passwords are stored hashed using **BCrypt**
+- Endpoints are secured by roles:
+    - `/teacher/**` → `ROLE_TEACHER` access
+    - `/student/**` → `ROLE_STUDENT` access
+    - `/auth/**` → public endpoints
+
+---
+
+
+👤 Author
+T-nahsin
